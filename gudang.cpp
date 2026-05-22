@@ -3,35 +3,22 @@
 #include <cstring>
 using namespace std;
 
-// ============================================================
-//  STRUKTUR DATA
-// ============================================================
-
 // Node untuk Linked List Tunggal (data barang)
 struct Barang {
     char nama[100];
     int  jumlah;
     char tanggal[20]; // format: DD-MM-YYYY
-    Barang* next;     // pointer ke node berikutnya (LL tunggal)
+    Barang* next;
 };
 
-// Node untuk Linked List Ganda (data admin)
+// Node untuk (data admin)
 struct Admin {
     char username[50];
     Admin* next; // pointer ke node berikutnya
-    Admin* prev; // pointer ke node sebelumnya (LL ganda)
+    Admin* prev; // pointer ke node sebelumnya
 };
-
-// ============================================================
-//  VARIABEL GLOBAL (pointer head)
-// ============================================================
-Barang* headBarang = NULL; // head linked list tunggal barang
-Admin*  headAdmin  = NULL; // head linked list ganda admin
-
-// ============================================================
-//  FUNGSI UTILITAS
-// ============================================================
-
+Barang* headBarang = NULL;
+Admin*  headAdmin  = NULL;
 // Membandingkan tanggal format DD-MM-YYYY
 int bandingkanTanggal(const char* a, const char* b) {
     int da, ma, ya, db, mb, yb;
@@ -42,7 +29,7 @@ int bandingkanTanggal(const char* a, const char* b) {
     return da - db;
 }
 
-// Validasi format tanggal DD-MM-YYYY (sederhana)
+// Validasi format tanggal DD-MM-YYYY
 bool validasiTanggal(const char* tgl) {
     if (strlen(tgl) != 10) return false;
     if (tgl[2] != '-' || tgl[5] != '-') return false;
@@ -59,10 +46,6 @@ void pauseLayar() {
     while ((c = getchar()) != '\n' && c != EOF);
     getchar();
 }
-
-// ============================================================
-//  MANAJEMEN ADMIN (Linked List Ganda)
-// ============================================================
 
 void tambahAdmin(const char* username) {
     Admin* baru = new Admin;
@@ -147,10 +130,6 @@ void menuTambahAdmin() {
     }
 }
 
-// ============================================================
-//  MANAJEMEN BARANG (Linked List Tunggal)
-// ============================================================
-
 void tambahBarang(const char* nama, int jumlah, const char* tanggal) {
     Barang* baru = new Barang;
     strcpy(baru->nama, nama);
@@ -211,10 +190,6 @@ void menuInputBarang() {
     printf("Barang '%s' berhasil ditambahkan ke gudang.\n", nama);
 }
 
-// ============================================================
-//  OUTPUT / TAMPILKAN BARANG
-// ============================================================
-
 void cetakHeader() {
     printf("%-5s %-25s %-10s %-12s\n", "No", "Nama Barang", "Jumlah", "Tanggal Masuk");
     printf("%-5s %-25s %-10s %-12s\n", "----", "-------------------------", "----------", "------------");
@@ -262,11 +237,7 @@ void menuOutput() {
     else if (pilihan == 2) tampilkanSemuaBarang(false);
     else printf("Pilihan tidak valid.\n");
 }
-
-// ============================================================
-//  SORTING & SIMPAN HASIL KE FILE
-// ============================================================
-
+//simpan file hasil sorting
 void menuSorting() {
     if (headBarang == NULL) { printf("Tidak ada barang.\n"); return; }
 
@@ -317,7 +288,6 @@ void menuSorting() {
         for (int i = 0; i < n; i++)
             fprintf(f, "%-5d %-25s %-10d %-12s\n", i+1, arr[i]->nama, arr[i]->jumlah, arr[i]->tanggal);
         fclose(f);
-        printf("\nHasil sorting disimpan ke file 'hasil_sorting.txt'.\n");
     } else {
         printf("Gagal menyimpan hasil sorting!\n");
     }
@@ -325,11 +295,7 @@ void menuSorting() {
     delete[] arr;
 }
 
-// ============================================================
-//  SEARCHING
-// ============================================================
-
-// Binary Search berdasarkan nama (array harus sudah terurut)
+// Binary Search berdasarkan nama
 int binarySearchNama(Barang** arr, int n, const char* keyword) {
     int lo = 0, hi = n - 1;
     while (lo <= hi) {
@@ -379,7 +345,6 @@ void menuSearch() {
             printf("\n=== Hasil Pencarian Nama: '%s' ===\n", keyword);
             cetakHeader();
             int no = 1;
-            // Cek semua yang namanya sama (duplikat)
             for (int i = 0; i < n; i++)
                 if (strcmp(arr[i]->nama, keyword) == 0) {
                     printf("%-5d %-25s %-10d %-12s\n", no++, arr[i]->nama, arr[i]->jumlah, arr[i]->tanggal);
@@ -411,10 +376,6 @@ void menuSearch() {
     if (!ditemukan) printf("Barang tidak ditemukan.\n");
     delete[] arr;
 }
-
-// ============================================================
-//  HAPUS BARANG
-// ============================================================
 
 void menuHapusBarang() {
     if (headBarang == NULL) { printf("Tidak ada barang.\n"); return; }
@@ -456,10 +417,6 @@ void menuHapusBarang() {
     else simpanBarang();
 }
 
-// ============================================================
-//  EDIT STOK BARANG
-// ============================================================
-
 void menuEditBarang() {
     if (headBarang == NULL) { printf("Tidak ada barang.\n"); return; }
 
@@ -493,10 +450,6 @@ void menuEditBarang() {
     if (!ditemukan) printf("Barang '%s' tidak ditemukan.\n", nama);
 }
 
-// ============================================================
-//  LOGIN
-// ============================================================
-
 bool login() {
     char username[50];
     int percobaan = 0;
@@ -523,11 +476,7 @@ bool login() {
     printf("Terlalu banyak percobaan gagal. Program ditutup.\n");
     return false;
 }
-
-// ============================================================
-//  MENU UTAMA
-// ============================================================
-
+//menu utama
 void tampilkanMenu() {
     printf("\n=======================================\n");
     printf("|        MENU UTAMA - GUDANG           |\n");
@@ -544,20 +493,12 @@ void tampilkanMenu() {
     printf("Pilihan: ");
 }
 
-// ============================================================
-//  FREE MEMORY
-// ============================================================
-
 void bebaskanMemori() {
     Barang* b = headBarang;
     while (b) { Barang* tmp = b->next; delete b; b = tmp; }
     Admin* a = headAdmin;
     while (a) { Admin* tmp = a->next; delete a; a = tmp; }
 }
-
-// ============================================================
-//  MAIN
-// ============================================================
 
 int main() {
     muatAdmin();
