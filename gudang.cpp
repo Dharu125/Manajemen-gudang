@@ -98,20 +98,12 @@ bool cekAdmin(const char* username) {
 }
 
 void tampilkanAdmin() {
-    printf("\n=== Daftar Admin (Traversal Maju - LL Ganda) ===\n");
+    printf("\n=== Daftar Admin ===\n");
     Admin* temp = headAdmin;
-    Admin* ekor = NULL;
     int no = 1;
     while (temp != NULL) {
         printf("%d. %s\n", no++, temp->username);
-        ekor = temp;
         temp = temp->next;
-    }
-    printf("\n=== Daftar Admin (Traversal Mundur - LL Ganda) ===\n");
-    no = 1;
-    while (ekor != NULL) {
-        printf("%d. %s\n", no++, ekor->username);
-        ekor = ekor->prev;
     }
 }
 
@@ -488,7 +480,8 @@ void tampilkanMenu() {
     printf("|  5. Hapus Barang                     |\n");
     printf("|  6. Edit Stok Barang                 |\n");
     printf("|  7. Tambah Admin                     |\n");
-    printf("|  8. Keluar                           |\n");
+    printf("|  8. Tampilkan Admin                  |\n");
+    printf("|  9. Keluar                           |\n");
     printf("========================================\n");
     printf("Pilihan: ");
 }
@@ -528,8 +521,9 @@ int main() {
                 tampilkanAdmin();
                 pauseLayar();
                 break;
-            case 8:
-                printf("\nTerima kasih telah menggunakan Sistem Manajemen Gudang.\n");
+            case 8: tampilkanAdmin();   pauseLayar(); break;    
+            case 9:
+                printf("\nTerima kasih selamat bekerja:)\n");
                 jalan = false;
                 break;
             default:

@@ -1,5 +1,6 @@
 === Hasil Sorting Berdasarkan Tanggal ===
 No    Nama Barang               Jumlah     Tanggal Masuk
 ----  ------------------------- ---------- ------------
-1     square tube               50         12-05-2026  
+1     square tube               40         12-05-2026  
 2     electroda                 40         20-05-2026  
+3     seng                      90         23-05-2026  
